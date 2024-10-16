@@ -4,10 +4,8 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity
-data class Atividade(
+data class AtividadesLista(
     @PrimaryKey(autoGenerate = true) val id: Long = 0L,
-    val nome: String,
-    val data: String,
-    val prioridade: String,
-    val atividadeList: List<AtividadesLista>
+    val cheked: Boolean = false,
+    val nomeAtividade: String
 )

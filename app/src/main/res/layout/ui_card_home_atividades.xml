@@ -2,6 +2,7 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cardAtividades"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="10dp"
@@ -33,7 +34,10 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="10dp"
+            android:ellipsize="end"
+            android:maxLines="2"
+            app:layout_constraintEnd_toStartOf="@id/ui_card_icon_more"
             app:layout_constraintStart_toEndOf="@id/ui_card_icon_prioridade"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Nome" />
@@ -43,7 +47,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="10dp"
+            app:layout_constraintEnd_toStartOf="@id/ui_card_icon_more"
             app:layout_constraintStart_toEndOf="@id/ui_card_icon_prioridade"
             app:layout_constraintTop_toBottomOf="@id/ui_card_atividade_home_nome"
             tools:text="25/01/2002" />
@@ -53,10 +58,21 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="10dp"
+            app:layout_constraintEnd_toStartOf="@id/ui_card_icon_more"
             app:layout_constraintStart_toEndOf="@id/ui_card_icon_prioridade"
             app:layout_constraintTop_toBottomOf="@id/ui_card_atividade_home_data"
             tools:text="Prioridade: Alta" />
+
+        <ImageView
+            android:id="@+id/ui_card_icon_more"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:backgroundTint="@android:color/transparent"
+            android:src="@drawable/icon_ac_more"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>
 
