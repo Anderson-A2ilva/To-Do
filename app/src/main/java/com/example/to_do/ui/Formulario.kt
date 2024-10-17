@@ -3,10 +3,14 @@ package com.example.to_do.ui
 import android.app.DatePickerDialog
 import android.icu.util.Calendar
 import android.os.Bundle
+import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.to_do.adapter.AdapterAtividadeList
+import com.example.to_do.adapter.AdapterRecyclerView
 import com.example.to_do.data.dataBase.AppDataBase
 import com.example.to_do.data.model.Atividade
 import com.example.to_do.data.model.AtividadesLista
@@ -14,7 +18,8 @@ import com.example.to_do.databinding.ActivityFormularioBinding
 import kotlinx.coroutines.launch
 
 class Formulario : AppCompatActivity() {
-    private var idAtividade = 0L
+    private var atividadeList = mutableListOf<AtividadesLista>()
+    private  lateinit var adapter: AdapterAtividadeList
 
     private val formularioDao by lazy {
         val db = AppDataBase.instancia(this)
@@ -30,6 +35,8 @@ class Formulario : AppCompatActivity() {
         setContentView(binding.root)
         configuraDataPicker()
         configuraSpinnerPrioridade()
+        configuraBotaoSalvar()
+        configuraReCyclerView()
     }
 
     private fun configuraDataPicker() {
@@ -70,15 +77,31 @@ class Formulario : AppCompatActivity() {
         }
     }
 
-//    private fun configuraReCyclerView(){
-//        adapter =
-//    }
+    private fun configuraReCyclerView(){
+        adapter = AdapterAtividadeList(this,atividadeList) {afazer, isChecked ->
+            afazer.cheked
+        }
+        binding.formularioAtividadeRecyclerView.adapter = adapter
+        binding.formularioAtividadeRecyclerView.layoutManager = LinearLayoutManager(this)
+    }
+
+    private fun configuraBotaoSalvar(){
+        val botaoSalvar = binding.formularioAtividadeBotaoSalvar
+
+        botaoSalvar.setOnClickListener {
+            val atividadeNova = criaFormularioAtividade()
+            lifecycleScope.launch {
+                formularioDao.salva(atividadeNova)
+                Log.e("salvaDados", "configuraBotaoSalvar: ${criaFormularioAtividade()}}", )
+                finish()
+            }
+        }
+    }
 
     private fun criaFormularioAtividade(): Atividade {
         val nomeFormularioAtividade = binding.textFieldFormularioAtividadeNomeText.text.toString()
         val dataFormularioAtividade = binding.textFieldFormularioAtividadeDataText.text.toString()
-        val prioridadeFormularioAtividade =
-            binding.textFieldFormularioAtividadePrioridadeText.toString()
+        val prioridadeFormularioAtividade = binding.textFieldFormularioAtividadePrioridadeText.text.toString()
 
         val atividadeNova = Atividade(
             nome = nomeFormularioAtividade,

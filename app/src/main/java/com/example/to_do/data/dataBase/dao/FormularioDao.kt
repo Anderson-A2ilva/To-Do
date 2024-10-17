@@ -6,15 +6,15 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.to_do.data.model.Atividade
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface FormularioDao {
     @Query("SELECT * FROM atividade")
-    fun getAll(): List<Atividade>
-
+    fun buscaTodos(): Flow<List<Atividade>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAll(atividade: Atividade)
+    suspend fun salva(atividade: Atividade)
 
     @Delete
     suspend fun delete(atividade: Atividade)
