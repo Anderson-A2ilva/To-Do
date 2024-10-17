@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,6 +16,7 @@ import com.example.to_do.data.dataBase.AppDataBase
 import com.example.to_do.data.model.Atividade
 import com.example.to_do.data.model.AtividadesLista
 import com.example.to_do.databinding.ActivityFormularioBinding
+import com.example.to_do.databinding.UiDialogAdicionaAtividadeBinding
 import kotlinx.coroutines.launch
 
 class Formulario : AppCompatActivity() {
@@ -37,6 +39,7 @@ class Formulario : AppCompatActivity() {
         configuraSpinnerPrioridade()
         configuraBotaoSalvar()
         configuraReCyclerView()
+        configuraAtividadeDialog()
     }
 
     private fun configuraDataPicker() {
@@ -58,6 +61,27 @@ class Formulario : AppCompatActivity() {
         )
         dataEditText.setOnClickListener {
             datePickerDialog.show()
+        }
+    }
+
+    private fun configuraAtividadeDialog() {
+        binding.textFieldFormularioAtividadeAdicionarAtividadeText.setOnClickListener {
+            val atividadeDialog = UiDialogAdicionaAtividadeBinding.inflate(layoutInflater)
+
+            val dialog = AlertDialog.Builder(this)
+                .setView(atividadeDialog.root)
+                .setPositiveButton("comfirmar") {_,_ ->
+                    val nomeAtividade =
+                        atividadeDialog.textFieldDialogAtividadeNome.editText?.text.toString()
+                    val novaAtividade = AtividadesLista(nomeAtividade = nomeAtividade, cheked = false)
+                    atividadeList.add(novaAtividade)
+                    adapter.notifyDataSetChanged()
+                }
+                .setNegativeButton("Cancelar") {_,_ ->
+
+                }
+                .create()
+            dialog.show()
         }
     }
 

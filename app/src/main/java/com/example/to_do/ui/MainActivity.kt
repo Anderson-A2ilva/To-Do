@@ -9,9 +9,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.to_do.adapter.AdapterRecyclerView
 import com.example.to_do.data.dataBase.AppDataBase
 import com.example.to_do.databinding.ActivityMainBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class MainActivity : AppCompatActivity() {
+
+    private val scope = MainScope()
 
     private val binding by lazy {
         ActivityMainBinding.inflate(layoutInflater)
@@ -31,12 +37,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         fabConfigura()
         recyclerviewConfigura()
-//        lifecycleScope.launch {
-//            formularioDao.buscaTodos().collect {atividades ->
-//                Log.d("MainActivity", "Atividades atualizadas: $atividades")
-//                adapter.atualiza(atividades)
-//            }
-//        }
     }
 
     override fun onResume() {
@@ -59,7 +59,20 @@ class MainActivity : AppCompatActivity() {
     private fun recyclerviewConfigura() {
         val recyclerView = binding.MainActivityRecyclerView
         recyclerView.adapter = adapter
-//        adapter.atualiza(formularioDao.getAll())
+
+        adapter.quandoClicarEmRemover = { atividade ->
+            scope.launch {
+                withContext(Dispatchers.IO) {
+                    formularioDao.delete(atividade)
+                }
+                val atividadesAtualizadas =
+                    formularioDao.buscaTodos().first()  // Obtém a nova lista
+                withContext(Dispatchers.Main) {
+                    adapter.atualiza(atividadesAtualizadas)
+                }
+            }
+        }
         recyclerView.layoutManager = LinearLayoutManager(this)
     }
+
 }
