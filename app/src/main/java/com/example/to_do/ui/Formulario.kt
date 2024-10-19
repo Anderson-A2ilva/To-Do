@@ -116,7 +116,7 @@ class Formulario : AppCompatActivity() {
             val atividadeNova = criaFormularioAtividade()
             lifecycleScope.launch {
                 formularioDao.salva(atividadeNova)
-                Log.e("salvaDados", "configuraBotaoSalvar: ${criaFormularioAtividade()}}", )
+                Log.d("salvaDados", "configuraBotaoSalvar: ${criaFormularioAtividade()}}", )
                 finish()
             }
         }
@@ -131,7 +131,7 @@ class Formulario : AppCompatActivity() {
             nome = nomeFormularioAtividade,
             data = dataFormularioAtividade,
             prioridade = prioridadeFormularioAtividade,
-            atividadeList = emptyList()
+            atividadeList = atividadeList
         )
         return atividadeNova
     }

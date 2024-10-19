@@ -16,6 +16,8 @@ interface FormularioDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun salva(atividade: Atividade)
 
+    @Query("SELECT * FROM Atividade WHERE id = :id")
+    fun buscaPorId(id: Long): List<Atividade>
     @Delete
     suspend fun delete(atividade: Atividade)
 }

@@ -60,6 +60,14 @@ class MainActivity : AppCompatActivity() {
         val recyclerView = binding.MainActivityRecyclerView
         recyclerView.adapter = adapter
 
+        adapter.clickInformacoes = { atividade ->
+            val intent = Intent( this, AtividadeInformacoes::class.java).apply {
+                putExtra(CHAVE_ATIVIDADE_ID, atividade.id)
+                Log.d("AdapterRecyclerView", "Atividade clicada: ${atividade.id}")
+            }
+            startActivity(intent)
+        }
+
         adapter.quandoClicarEmRemover = { atividade ->
             scope.launch {
                 withContext(Dispatchers.IO) {
