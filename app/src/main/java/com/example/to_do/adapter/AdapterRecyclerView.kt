@@ -39,7 +39,7 @@ class AdapterRecyclerView(
             }
         }
 
-        fun vincula (atividade: Atividade) {
+        fun vincula(atividade: Atividade) {
             this.atividade = atividade
             val nome = binding.uiCardAtividadeHomeNome
             nome.text = atividade.nome
@@ -47,23 +47,33 @@ class AdapterRecyclerView(
             val data = binding.uiCardAtividadeHomeData
             data.text = atividade.data
 
+            val hora = binding.uiCardAtividadeHomeHora
+            hora.text = atividade.hora
+
             val prioridade = binding.uiCardAtividadeHomePrioridade
             prioridade.text = atividade.prioridade
 
-            val cor = when (atividade.prioridade){
+            val cor = when (atividade.prioridade) {
                 "Alta" -> ContextCompat.getColor(context, R.color.Red)
                 "Média" -> ContextCompat.getColor(context, R.color.Yellow)
                 "Baixa" -> ContextCompat.getColor(context, R.color.Green)
                 else -> ContextCompat.getColor(context, R.color.white)
             }
 
-            val drawable = ContextCompat.getDrawable(context,R.drawable.icon_prioridade)
-            drawable?.setTint(cor)
-            binding.uiCardIconPrioridade.setImageDrawable(drawable)
+            val iconeCategoria = when (atividade.categoria) {
+                "Pessoal" -> ContextCompat.getDrawable(context, R.drawable.ic_ac_pessoal)
+                "Trabalho" -> ContextCompat.getDrawable(context, R.drawable.ic_ac_work)
+                "Casa" -> ContextCompat.getDrawable(context, R.drawable.ic_ac_home)
+                else -> ContextCompat.getDrawable(context, R.drawable.ic_action_deletar)
+            }
+
+            binding.uiCardAtividadeHomeCategoria.setImageDrawable(iconeCategoria)
+            binding.uiPrioridadeColor.setBackgroundColor(cor)
+
         }
 
         private fun mostraPopupMenu(view: android.view.View) {
-            val  popupMenu = PopupMenu(context, view)
+            val popupMenu = PopupMenu(context, view)
             popupMenu.inflate(R.menu.pop_up_menu)
             popupMenu.setOnMenuItemClickListener(this)
             popupMenu.show()
@@ -71,26 +81,31 @@ class AdapterRecyclerView(
 
         override fun onMenuItemClick(item: MenuItem?): Boolean {
             item?.let {
-                when (it.itemId){
+                when (it.itemId) {
                     R.id.menu_detalhes_classe_editar -> {
                         quandoClicarEmEditar(atividade)
                         true
                     }
+
                     R.id.menu_detalhes_classe_deletar -> {
                         quandoClicarEmRemover(atividade)
                         true
-                    } else -> false
+                    }
+
+                    else -> false
                 }
             }
-                return true
+            return true
         }
 
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = UiCardHomeAtividadesBinding.inflate(LayoutInflater.from(context),
+        val binding = UiCardHomeAtividadesBinding.inflate(
+            LayoutInflater.from(context),
             parent,
-            false)
+            false
+        )
         return ViewHolder(binding)
     }
 
@@ -101,7 +116,7 @@ class AdapterRecyclerView(
         holder.vincula(atividade)
     }
 
-    fun atualiza(atividade: List<Atividade>){
+    fun atualiza(atividade: List<Atividade>) {
         Log.d("AdapterRecyclerView", "Atualizando com: $atividade")
         atividadeList.clear()
         atividadeList.addAll(atividade)

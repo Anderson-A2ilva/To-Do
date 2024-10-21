@@ -1,27 +1,20 @@
 package com.example.to_do.ui
 
 import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.icu.util.Calendar
 import android.os.Bundle
 import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.to_do.adapter.AdapterAtividadeList
-import com.example.to_do.adapter.AdapterRecyclerView
 import com.example.to_do.data.dataBase.AppDataBase
 import com.example.to_do.data.model.Atividade
-import com.example.to_do.data.model.AtividadesLista
 import com.example.to_do.databinding.ActivityFormularioBinding
-import com.example.to_do.databinding.UiDialogAdicionaAtividadeBinding
 import kotlinx.coroutines.launch
 
 class Formulario : AppCompatActivity() {
-    private var atividadeList = mutableListOf<AtividadesLista>()
-    private  lateinit var adapter: AdapterAtividadeList
 
     private val formularioDao by lazy {
         val db = AppDataBase.instancia(this)
@@ -38,8 +31,8 @@ class Formulario : AppCompatActivity() {
         configuraDataPicker()
         configuraSpinnerPrioridade()
         configuraBotaoSalvar()
-        configuraReCyclerView()
-        configuraAtividadeDialog()
+        configuraSpinnerCategoria()
+        configuraTimePicker()
     }
 
     private fun configuraDataPicker() {
@@ -64,24 +57,26 @@ class Formulario : AppCompatActivity() {
         }
     }
 
-    private fun configuraAtividadeDialog() {
-        binding.textFieldFormularioAtividadeAdicionarAtividadeText.setOnClickListener {
-            val atividadeDialog = UiDialogAdicionaAtividadeBinding.inflate(layoutInflater)
+    private fun configuraTimePicker() {
+        val calendario = Calendar.getInstance()
+        val hora = calendario.get(Calendar.HOUR_OF_DAY)
+        val minuto = calendario.get(Calendar.MINUTE)
+        val horaEditText = binding.textFieldFormularioAtividadeHoraText
 
-            val dialog = AlertDialog.Builder(this)
-                .setView(atividadeDialog.root)
-                .setPositiveButton("comfirmar") {_,_ ->
-                    val nomeAtividade =
-                        atividadeDialog.textFieldDialogAtividadeNome.editText?.text.toString()
-                    val novaAtividade = AtividadesLista(nomeAtividade = nomeAtividade, cheked = false)
-                    atividadeList.add(novaAtividade)
-                    adapter.notifyDataSetChanged()
-                }
-                .setNegativeButton("Cancelar") {_,_ ->
+        val timePickerDialog = TimePickerDialog(
+            this,
+            { _, horaSelecionada, minutoselecionado ->
+                // Formata a string com a hora selecionada
+                val formattedTime = String.format("%02d:%02d", horaSelecionada, minutoselecionado)
+                horaEditText.setText(formattedTime)
+            },
+            hora,
+            minuto,
+            true // true para 24 horas, false para formato 12 horas
+        )
 
-                }
-                .create()
-            dialog.show()
+        horaEditText.setOnClickListener {
+            timePickerDialog.show()
         }
     }
 
@@ -101,22 +96,30 @@ class Formulario : AppCompatActivity() {
         }
     }
 
-    private fun configuraReCyclerView(){
-        adapter = AdapterAtividadeList(this,atividadeList) {afazer, isChecked ->
-            afazer.cheked
+    private fun configuraSpinnerCategoria() {
+        val categoria = arrayOf("Categoria", "Pessoal", "Trabalho", "Casa")
+        val autoCompletePrioridade =
+            binding.textFieldFormularioAtividadeCategoria.editText as? AutoCompleteTextView
+        val adapter = ArrayAdapter(
+            this,
+            android.R.layout.simple_dropdown_item_1line,
+            categoria
+        )
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        autoCompletePrioridade?.setAdapter(adapter)
+        autoCompletePrioridade?.setOnClickListener {
+            autoCompletePrioridade.showDropDown()
         }
-        binding.formularioAtividadeRecyclerView.adapter = adapter
-        binding.formularioAtividadeRecyclerView.layoutManager = LinearLayoutManager(this)
     }
 
-    private fun configuraBotaoSalvar(){
+    private fun configuraBotaoSalvar() {
         val botaoSalvar = binding.formularioAtividadeBotaoSalvar
 
         botaoSalvar.setOnClickListener {
             val atividadeNova = criaFormularioAtividade()
             lifecycleScope.launch {
                 formularioDao.salva(atividadeNova)
-                Log.d("salvaDados", "configuraBotaoSalvar: ${criaFormularioAtividade()}}", )
+                Log.d("salvaDados", "configuraBotaoSalvar: ${criaFormularioAtividade()}}")
                 finish()
             }
         }
@@ -125,13 +128,20 @@ class Formulario : AppCompatActivity() {
     private fun criaFormularioAtividade(): Atividade {
         val nomeFormularioAtividade = binding.textFieldFormularioAtividadeNomeText.text.toString()
         val dataFormularioAtividade = binding.textFieldFormularioAtividadeDataText.text.toString()
-        val prioridadeFormularioAtividade = binding.textFieldFormularioAtividadePrioridadeText.text.toString()
+        val horaFormularioAtividade = binding.textFieldFormularioAtividadeHoraText.text.toString()
+        val prioridadeFormularioAtividade =
+            binding.textFieldFormularioAtividadePrioridadeText.text.toString()
+        val categoriaFormularioAtividade =
+            binding.textFieldFormularioAtividadeCategoriaText.text.toString()
+        val textFormularioAtividade = binding.editTextFormularioAtividadeText.text.toString()
 
         val atividadeNova = Atividade(
             nome = nomeFormularioAtividade,
             data = dataFormularioAtividade,
+            hora = horaFormularioAtividade,
             prioridade = prioridadeFormularioAtividade,
-            atividadeList = atividadeList
+            categoria = categoriaFormularioAtividade,
+            atividadeText = textFormularioAtividade
         )
         return atividadeNova
     }

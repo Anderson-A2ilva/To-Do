@@ -3,9 +3,11 @@ package com.example.to_do.ui
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.to_do.R
 import com.example.to_do.adapter.AdapterRecyclerView
 import com.example.to_do.data.dataBase.AppDataBase
 import com.example.to_do.databinding.ActivityMainBinding
@@ -61,11 +63,8 @@ class MainActivity : AppCompatActivity() {
         recyclerView.adapter = adapter
 
         adapter.clickInformacoes = { atividade ->
-            val intent = Intent( this, AtividadeInformacoes::class.java).apply {
-                putExtra(CHAVE_ATIVIDADE_ID, atividade.id)
-                Log.d("AdapterRecyclerView", "Atividade clicada: ${atividade.id}")
-            }
-            startActivity(intent)
+            val dialog = AtividadeDialog.newInstance(atividade)
+            dialog.show(supportFragmentManager, "AtividadeDialog")
         }
 
         adapter.quandoClicarEmRemover = { atividade ->
