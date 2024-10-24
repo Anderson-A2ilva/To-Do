@@ -12,9 +12,14 @@ import androidx.lifecycle.lifecycleScope
 import com.example.to_do.data.dataBase.AppDataBase
 import com.example.to_do.data.model.Atividade
 import com.example.to_do.databinding.ActivityFormularioBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class Formulario : AppCompatActivity() {
+    private val scope = CoroutineScope(Dispatchers.IO)
+    private var idAtividade = 0L
 
     private val formularioDao by lazy {
         val db = AppDataBase.instancia(this)
@@ -33,6 +38,7 @@ class Formulario : AppCompatActivity() {
         configuraBotaoSalvar()
         configuraSpinnerCategoria()
         configuraTimePicker()
+        editarAtividade()
     }
 
     private fun configuraDataPicker() {
@@ -118,10 +124,39 @@ class Formulario : AppCompatActivity() {
         botaoSalvar.setOnClickListener {
             val atividadeNova = criaFormularioAtividade()
             lifecycleScope.launch {
-                formularioDao.salva(atividadeNova)
-                Log.d("salvaDados", "configuraBotaoSalvar: ${criaFormularioAtividade()}}")
+                if (idAtividade == 0L) {
+                    formularioDao.salva(atividadeNova)
+                    Log.d("salvaDados", "configuraBotaoSalvar: ${criaFormularioAtividade()}}")
+                } else  {
+                    atividadeNova.id = idAtividade
+                    formularioDao.atualiza(atividadeNova)
+                }
                 finish()
             }
+        }
+    }
+
+    private fun editarAtividade() {
+        scope.launch {
+            idAtividade = intent.getLongExtra(CHAVE_ATIVIDADE_ID, 0L)
+            if (idAtividade != 0L) {
+                formularioDao.buscaPorId(idAtividade)?.collect { atividade ->
+                    withContext(Dispatchers.Main) {
+                        atividade?.let { preencheFormularioComDadosAtividade(it) }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun preencheFormularioComDadosAtividade(atividade: Atividade) {
+        with(binding) {
+            textFieldFormularioAtividadeNomeText.setText(atividade.nome)
+            textFieldFormularioAtividadeDataText.setText(atividade.data)
+            textFieldFormularioAtividadeHoraText.setText(atividade.hora)
+            textFieldFormularioAtividadePrioridadeText.setText(atividade.prioridade, false)
+            textFieldFormularioAtividadeCategoriaText.setText(atividade.categoria, false)
+            editTextFormularioAtividadeTextText.setText(atividade.atividadeText)
         }
     }
 
@@ -133,7 +168,7 @@ class Formulario : AppCompatActivity() {
             binding.textFieldFormularioAtividadePrioridadeText.text.toString()
         val categoriaFormularioAtividade =
             binding.textFieldFormularioAtividadeCategoriaText.text.toString()
-        val textFormularioAtividade = binding.editTextFormularioAtividadeText.text.toString()
+        val textFormularioAtividade = binding.editTextFormularioAtividadeTextText.text.toString()
 
         val atividadeNova = Atividade(
             nome = nomeFormularioAtividade,

@@ -45,13 +45,13 @@ class AdapterRecyclerView(
             nome.text = atividade.nome
 
             val data = binding.uiCardAtividadeHomeData
-            data.text = atividade.data
+            data.text = "Data:${atividade.data}"
 
             val hora = binding.uiCardAtividadeHomeHora
-            hora.text = atividade.hora
+            hora.text = "Hora:${atividade.hora}"
 
             val prioridade = binding.uiCardAtividadeHomePrioridade
-            prioridade.text = atividade.prioridade
+            prioridade.text = "Prioridade:${atividade.prioridade}"
 
             val cor = when (atividade.prioridade) {
                 "Alta" -> ContextCompat.getColor(context, R.color.Red)
@@ -64,8 +64,9 @@ class AdapterRecyclerView(
                 "Pessoal" -> ContextCompat.getDrawable(context, R.drawable.ic_ac_pessoal)
                 "Trabalho" -> ContextCompat.getDrawable(context, R.drawable.ic_ac_work)
                 "Casa" -> ContextCompat.getDrawable(context, R.drawable.ic_ac_home)
-                else -> ContextCompat.getDrawable(context, R.drawable.ic_action_deletar)
+                else -> ContextCompat.getDrawable(context, R.drawable.ic_erro_atividade)
             }
+            iconeCategoria?.setTint(ContextCompat.getColor(context,R.color.cordrawableType))
 
             binding.uiCardAtividadeHomeCategoria.setImageDrawable(iconeCategoria)
             binding.uiPrioridadeColor.setBackgroundColor(cor)

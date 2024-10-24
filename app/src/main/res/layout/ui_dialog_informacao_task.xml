@@ -12,6 +12,8 @@
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="16dp"
         tools:text="Nome Task"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -21,6 +23,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:drawableStart="@drawable/icon_ac_calendar"
+        android:drawableTint="@color/corBotaoAndDrawables"
         tools:text="Data: 00/00/0000"
         app:layout_constraintEnd_toStartOf="@id/dialog_task_infomacao_hora"
         app:layout_constraintStart_toStartOf="parent"
@@ -33,6 +36,7 @@
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="8dp"
         android:drawableStart="@drawable/ic_action_hora"
+        android:drawableTint="@color/corBotaoAndDrawables"
         tools:text="Hora: 00:00"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/dialog_task_infomacao_data"
@@ -45,6 +49,8 @@
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="8dp"
         tools:text="Prioridade"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/dialog_task_infomacao_data" />
 
     <TextView
@@ -54,6 +60,8 @@
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="8dp"
         tools:text="Categoria"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/dialog_task_infomacao_prioridade" />
 
     <TextView
@@ -62,6 +70,8 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         tools:text="loremloremlroemlroemaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
         app:layout_constraintTop_toBottomOf="@id/dialog_task_infomacao_categoria" />
 

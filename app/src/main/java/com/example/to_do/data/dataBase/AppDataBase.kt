@@ -1,12 +1,12 @@
 package com.example.to_do.data.dataBase
 
-import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.to_do.data.dataBase.dao.FormularioDao
 import com.example.to_do.data.dataBase.migrations.MIGRATION_1_2
 import com.example.to_do.data.model.Atividade
+import com.example.to_do.ui.AtividadeDialog
 
 @Database(
     entities = [Atividade::class],
@@ -20,7 +20,7 @@ abstract class AppDataBase : RoomDatabase() {
     companion object {
         @Volatile
         private var db: AppDataBase? = null
-        fun instancia(context: Context): AppDataBase {
+        fun instancia(context: AtividadeDialog): AppDataBase {
             return db ?: Room.databaseBuilder(
                 context,
                 AppDataBase::class.java,

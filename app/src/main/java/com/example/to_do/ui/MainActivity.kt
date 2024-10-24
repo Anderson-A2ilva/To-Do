@@ -2,12 +2,9 @@ package com.example.to_do.ui
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.to_do.R
 import com.example.to_do.adapter.AdapterRecyclerView
 import com.example.to_do.data.dataBase.AppDataBase
 import com.example.to_do.databinding.ActivityMainBinding
@@ -79,6 +76,16 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+
+        adapter.quandoClicarEmEditar = { atividade ->
+            val intent = Intent(this, Formulario::class.java).apply {
+                putExtra(CHAVE_ATIVIDADE_ID, atividade.id)
+                putExtra("ACTION_TYPE", "EDITAR")
+            }
+            startActivity(intent)
+        }
+
+
         recyclerView.layoutManager = LinearLayoutManager(this)
     }
 

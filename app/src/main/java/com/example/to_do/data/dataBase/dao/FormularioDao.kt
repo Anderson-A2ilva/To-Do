@@ -5,6 +5,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 import com.example.to_do.data.model.Atividade
 import kotlinx.coroutines.flow.Flow
 
@@ -17,7 +18,11 @@ interface FormularioDao {
     suspend fun salva(atividade: Atividade)
 
     @Query("SELECT * FROM Atividade WHERE id = :id")
-    fun buscaPorId(id: Long): List<Atividade>
+    fun buscaPorId(id: Long): Flow<Atividade>
+
     @Delete
     suspend fun delete(atividade: Atividade)
+
+    @Update
+    suspend fun atualiza(atividade: Atividade)
 }

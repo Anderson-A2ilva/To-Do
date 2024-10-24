@@ -8,7 +8,6 @@
     tools:context=".ui.Formulario">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -17,6 +16,8 @@
             style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:startIconTint="@color/corBotaoAndDrawables"
+            android:layout_marginTop="26dp"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="10dp"
@@ -39,6 +40,7 @@
             style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            app:startIconTint="@color/corBotaoAndDrawables"
             android:hint="Data"
             app:layout_constraintEnd_toEndOf="@id/textField_formulario_atividade_nome"
             app:layout_constraintStart_toStartOf="@id/textField_formulario_atividade_nome"
@@ -57,6 +59,7 @@
             style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            app:startIconTint="@color/corBotaoAndDrawables"
             android:hint="Hora"
             app:layout_constraintEnd_toEndOf="@id/textField_formulario_atividade_data"
             app:layout_constraintStart_toStartOf="@id/textField_formulario_atividade_data"
@@ -104,15 +107,27 @@
                 android:focusable="false" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <EditText
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/editText_formulario_atividade_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:startIconTint="@color/corBotaoAndDrawables"
             android:layout_margin="16dp"
+            android:hint="Atividades"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:drawableStart="@drawable/icon_ac_edit"
-            app:layout_constraintTop_toBottomOf="@id/textField_formulario_atividade_categoria"/>
+            app:layout_constraintTop_toBottomOf="@id/textField_formulario_atividade_categoria"
+            app:startIconDrawable="@drawable/ic_ac_atividade_add">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editText_formulario_atividade_text_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="top"
+                android:imeOptions="actionDone"
+                android:inputType="textMultiLine"
+                android:scrollbars="vertical" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <Button
             android:id="@+id/formulario_atividade_botaoSalvar"
@@ -122,7 +137,11 @@
             android:layout_marginTop="10dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
+            android:backgroundTint="@color/corBotaoAndDrawables"
             android:text="Salvar"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/editText_formulario_atividade_text" />
