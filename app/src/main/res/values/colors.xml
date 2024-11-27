@@ -2,4 +2,17 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="Green">#73EC8B</color>
+    <color name="Yellow">#FFEB55</color>
+    <color name="Red">#C96868</color>
+
+    <color name="corPrimariaAtividadeTodo">#01204E</color>
+    <color name="corPrimariaVariantAtividadeTodo">#091057</color>
+    <color name="corSecundariaAtividadeTodo">#024CAA</color>
+    <color name="corSecundariaVariantAtividadeTodo">#03346E</color>
+    <color name="corBotaoAndDrawables">#F5564E</color>
+    <color name="card_background">#FFFFFF</color>
+    <color name="cordrawableType">#01204E</color>
+
+
 </resources>
