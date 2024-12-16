@@ -5,25 +5,29 @@ import android.app.TimePickerDialog
 import android.icu.util.Calendar
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.example.to_do.R
 import com.example.to_do.data.dataBase.AppDataBase
 import com.example.to_do.data.model.Atividade
 import com.example.to_do.databinding.ActivityFormularioBinding
+import com.example.to_do.extensions.vaiPara
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class Formulario : AppCompatActivity() {
+class Formulario : UsuarioBaseActivity() {
     private val scope = CoroutineScope(Dispatchers.IO)
     private var idAtividade = 0L
 
     private val formularioDao by lazy {
-        val db = AppDataBase.instancia(this)
-        db.formularioDao()
+        AppDataBase.instancia(this).formularioDao()
     }
 
     private val binding by lazy {
@@ -33,12 +37,46 @@ class Formulario : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+
         configuraDataPicker()
         configuraSpinnerPrioridade()
-        configuraBotaoSalvar()
         configuraSpinnerCategoria()
         configuraTimePicker()
         editarAtividade()
+
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.formulario_menu, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.menu_botaoSalvar -> {
+                lifecycleScope.launch {
+                    usuario.filterNotNull()
+                        .collect{ usuario ->
+                            val atividadeNova = criaFormularioAtividade(usuario.id)
+                            if (idAtividade == 0L) {
+                                formularioDao.salva(atividadeNova)
+                                Log.d("salvaDados", "configuraBotaoSalvar: ${criaFormularioAtividade(usuario.id)}}")
+                            } else {
+                                atividadeNova.id = idAtividade
+                                formularioDao.atualiza(atividadeNova)
+                            }
+                            finish()
+                        }
+                }
+            }
+        }
+        if (item.itemId == android.R.id.home) {
+            onBackPressed()
+            return true
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     private fun configuraDataPicker() {
@@ -118,23 +156,6 @@ class Formulario : AppCompatActivity() {
         }
     }
 
-    private fun configuraBotaoSalvar() {
-        val botaoSalvar = binding.formularioAtividadeBotaoSalvar
-
-        botaoSalvar.setOnClickListener {
-            val atividadeNova = criaFormularioAtividade()
-            lifecycleScope.launch {
-                if (idAtividade == 0L) {
-                    formularioDao.salva(atividadeNova)
-                    Log.d("salvaDados", "configuraBotaoSalvar: ${criaFormularioAtividade()}}")
-                } else  {
-                    atividadeNova.id = idAtividade
-                    formularioDao.atualiza(atividadeNova)
-                }
-                finish()
-            }
-        }
-    }
 
     private fun editarAtividade() {
         scope.launch {
@@ -150,6 +171,8 @@ class Formulario : AppCompatActivity() {
     }
 
     private fun preencheFormularioComDadosAtividade(atividade: Atividade) {
+        supportActionBar?.title =
+            if (idAtividade > 0) "Edição da atividade" else "Criação da atividade"
         with(binding) {
             textFieldFormularioAtividadeNomeText.setText(atividade.nome)
             textFieldFormularioAtividadeDataText.setText(atividade.data)
@@ -160,7 +183,7 @@ class Formulario : AppCompatActivity() {
         }
     }
 
-    private fun criaFormularioAtividade(): Atividade {
+    private fun criaFormularioAtividade(usuarioId: String): Atividade {
         val nomeFormularioAtividade = binding.textFieldFormularioAtividadeNomeText.text.toString()
         val dataFormularioAtividade = binding.textFieldFormularioAtividadeDataText.text.toString()
         val horaFormularioAtividade = binding.textFieldFormularioAtividadeHoraText.text.toString()
@@ -176,7 +199,8 @@ class Formulario : AppCompatActivity() {
             hora = horaFormularioAtividade,
             prioridade = prioridadeFormularioAtividade,
             categoria = categoriaFormularioAtividade,
-            atividadeText = textFormularioAtividade
+            atividadeText = textFormularioAtividade,
+            usuarioId = usuarioId
         )
         return atividadeNova
     }

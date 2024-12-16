@@ -14,6 +14,9 @@ interface FormularioDao {
     @Query("SELECT * FROM atividade")
     fun buscaTodos(): Flow<List<Atividade>>
 
+    @Query("SELECT * FROM atividade WHERE usuarioId = :usuarioId")
+    fun buscaTodosDoUsuario(usuarioId: String) : Flow<List<Atividade>>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun salva(atividade: Atividade)
 

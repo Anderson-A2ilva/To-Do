@@ -6,26 +6,35 @@ import android.os.Bundle
 import android.view.View
 import android.widget.TextView
 import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.lifecycleScope
 import com.example.to_do.R
+import com.example.to_do.data.dataBase.AppDataBase
 import com.example.to_do.data.model.Atividade
-import com.example.to_do.databinding.UiDialogInformacaoTaskBinding
+import kotlinx.coroutines.launch
 
 class AtividadeDialog : DialogFragment() {
 
-
+    private val formularioDao by lazy {
+        val db = AppDataBase.instancia(requireContext())
+        db.formularioDao()
+    }
 
     private lateinit var atividade: Atividade
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        // Obtenha as informações da atividade através dos argumentos
+
         atividade = requireArguments().getParcelable<Atividade>("atividade") ?: return super.onCreateDialog(savedInstanceState)
 
-        // Crie um AlertDialog
         return AlertDialog.Builder(requireActivity())
             .setView(createView())
             .setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
+            .setNeutralButton("Concluida") {dialog, _ ->
+                marcaComoConcluida()
+                dialog.dismiss()
+            }
             .create()
     }
+
 
     private fun createView(): View {
         val view = layoutInflater.inflate(R.layout.ui_dialog_informacao_task, null)
@@ -38,6 +47,17 @@ class AtividadeDialog : DialogFragment() {
         view.findViewById<TextView>(R.id.dialog_task_infomacao_text_task).text = atividade.atividadeText
 
         return view
+    }
+
+    private fun marcaComoConcluida() {
+        atividade.isConcluida = !atividade.isConcluida
+
+
+        lifecycleScope.launch {
+            val db = formularioDao
+            db.atualiza(atividade)
+
+        }
     }
 
     companion object {
