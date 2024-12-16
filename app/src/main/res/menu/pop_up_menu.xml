@@ -5,11 +5,13 @@
     <item
         android:id="@+id/menu_detalhes_classe_editar"
         android:icon="@drawable/ic_action_editar"
+        android:iconTint="@color/md_theme_inverseOnSurface_highContrast"
         android:title="editar"
         app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/menu_detalhes_classe_deletar"
+        android:iconTint="@color/md_theme_inverseOnSurface_highContrast"
         android:icon="@drawable/ic_action_deletar"
         android:title="deletar"
         app:showAsAction="ifRoom" />

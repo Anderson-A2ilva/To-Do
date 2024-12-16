@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:layout_height="match_parent">
 
     <TextView
         android:id="@+id/dialog_task_infomacao_nome"
@@ -11,10 +11,11 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="16dp"
-        tools:text="Nome Task"
-        app:layout_constraintStart_toStartOf="parent"
+        android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Nome Task" />
 
     <TextView
         android:id="@+id/dialog_task_infomacao_data"
@@ -23,11 +24,12 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:drawableStart="@drawable/icon_ac_calendar"
-        android:drawableTint="@color/corBotaoAndDrawables"
-        tools:text="Data: 00/00/0000"
+        android:drawableTint="@color/md_theme_primary_highContrast"
+        android:textSize="16sp"
         app:layout_constraintEnd_toStartOf="@id/dialog_task_infomacao_hora"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/dialog_task_infomacao_nome" />
+        app:layout_constraintTop_toBottomOf="@id/dialog_task_infomacao_nome"
+        tools:text="Data: 00/00/0000" />
 
     <TextView
         android:id="@+id/dialog_task_infomacao_hora"
@@ -36,11 +38,12 @@
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="8dp"
         android:drawableStart="@drawable/ic_action_hora"
-        android:drawableTint="@color/corBotaoAndDrawables"
-        tools:text="Hora: 00:00"
+        android:drawableTint="@color/md_theme_primary_highContrast"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/dialog_task_infomacao_data"
-        app:layout_constraintTop_toBottomOf="@id/dialog_task_infomacao_nome" />
+        app:layout_constraintTop_toBottomOf="@id/dialog_task_infomacao_nome"
+        tools:text="Hora: 00:00" />
 
     <TextView
         android:id="@+id/dialog_task_infomacao_prioridade"
@@ -48,10 +51,11 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="8dp"
-        tools:text="Prioridade"
-        app:layout_constraintStart_toStartOf="parent"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/dialog_task_infomacao_data" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dialog_task_infomacao_data"
+        tools:text="Prioridade" />
 
     <TextView
         android:id="@+id/dialog_task_infomacao_categoria"
@@ -59,10 +63,11 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="8dp"
-        tools:text="Categoria"
-        app:layout_constraintStart_toStartOf="parent"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/dialog_task_infomacao_prioridade" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dialog_task_infomacao_prioridade"
+        tools:text="Categoria" />
 
     <TextView
         android:id="@+id/dialog_task_infomacao_text_task"
@@ -70,9 +75,10 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintStart_toStartOf="parent"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:text="loremloremlroemlroemaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-        app:layout_constraintTop_toBottomOf="@id/dialog_task_infomacao_categoria" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dialog_task_infomacao_categoria"
+        tools:text="loremloremlroemlroemaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

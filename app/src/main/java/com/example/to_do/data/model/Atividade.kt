@@ -16,5 +16,6 @@ data class Atividade(
     val prioridade: String,
     val categoria: String,
     val atividadeText: String,
-    var isConcluida: Boolean = false
+    var isConcluida: Boolean = false,
+    val usuarioId: String? = null
 ) : Parcelable

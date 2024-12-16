@@ -1,6 +1,7 @@
 package com.example.to_do.adapter
 
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
@@ -66,11 +67,23 @@ class AdapterRecyclerView(
                 "Casa" -> ContextCompat.getDrawable(context, R.drawable.ic_ac_home)
                 else -> ContextCompat.getDrawable(context, R.drawable.ic_erro_atividade)
             }
-            iconeCategoria?.setTint(ContextCompat.getColor(context,R.color.cordrawableType))
+            iconeCategoria?.setTint(ContextCompat.getColor(context,R.color.md_theme_inverseSurface_highContrast))
 
             binding.uiCardAtividadeHomeCategoria.setImageDrawable(iconeCategoria)
             binding.uiPrioridadeColor.setBackgroundColor(cor)
 
+            atualizaIconeConclusao(atividade, iconeCategoria)
+
+
+        }
+
+        private fun atualizaIconeConclusao(atividade: Atividade, iconeCategoria: Drawable?) {
+            if (atividade.isConcluida) {
+                val iconeConcluida = ContextCompat.getDrawable(context, R.drawable.ic_concluida)
+                binding.uiCardAtividadeHomeCategoria.setImageDrawable(iconeConcluida)
+            } else {
+                binding.uiCardAtividadeHomeCategoria.setImageDrawable(iconeCategoria)
+            }
         }
 
         private fun mostraPopupMenu(view: android.view.View) {
@@ -116,6 +129,7 @@ class AdapterRecyclerView(
         val atividade = atividadeList[position]
         holder.vincula(atividade)
     }
+
 
     fun atualiza(atividade: List<Atividade>) {
         Log.d("AdapterRecyclerView", "Atualizando com: $atividade")
